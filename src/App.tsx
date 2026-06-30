@@ -8,21 +8,20 @@ import { ProjectDetailsPage } from "./components/ProjectDetailsPage";
 import { ContactPage } from "./components/ContactPage";
 import { Toaster } from "./components/ui/sonner";
 import { Logo } from "./components/Logo";
+import { AnimatedWoodBackground } from "./components/background/AnimatedWoodBackground";
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState("home");
-  const [selectedProjectId, setSelectedProjectId] = useState<number | null>(null);
+  const [selectedProjectSlug, setSelectedProjectSlug] = useState<string | null>(null);
 
   const handleNavigate = (page: string) => {
-    // Check for project details navigation
     if (page.startsWith("project-details-")) {
-      const id = parseInt(page.replace("project-details-", ""), 10);
-      setSelectedProjectId(id);
+      const slug = page.replace("project-details-", "");
+      setSelectedProjectSlug(slug);
       setCurrentPage("project-details");
     } else {
       setCurrentPage(page);
     }
-    // Scroll to top when navigating
     window.scrollTo(0, 0);
   };
 
@@ -37,7 +36,7 @@ export default function App() {
       case "portfolio":
         return <PortfolioPage onNavigate={handleNavigate} />;
       case "project-details":
-        return <ProjectDetailsPage onNavigate={handleNavigate} projectId={selectedProjectId} />;
+        return <ProjectDetailsPage onNavigate={handleNavigate} projectSlug={selectedProjectSlug} />;
       case "contact":
         return <ContactPage />;
       default:
@@ -46,7 +45,9 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="relative min-h-screen bg-black">
+      <AnimatedWoodBackground />
+      <div className="relative z-10">
       <Header
         currentPage={currentPage}
         onNavigate={handleNavigate}
@@ -54,7 +55,7 @@ export default function App() {
       <main>{renderPage()}</main>
 
       {/* Footer */}
-      <footer className="bg-primary text-primary-foreground py-12">
+      <footer className="wood-surface py-12">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
@@ -131,13 +132,14 @@ export default function App() {
             </div>
           </div>
 
-          <div className="border-t border-primary mt-8 pt-8 text-center text-sm text-primary-foreground">
+          <div className="border-t border-white/15 mt-8 pt-8 text-center text-sm text-primary-foreground">
             <p>&copy; 2024 UA Designs. All rights reserved.</p>
           </div>
         </div>
       </footer>
 
       <Toaster />
+      </div>
     </div>
   );
 }

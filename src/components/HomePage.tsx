@@ -14,7 +14,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-primary to-accent text-white py-20">
+      <section className="relative wood-surface wood-surface--hero text-white py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl">
             <div className="flex items-center gap-4 mb-6">
@@ -24,7 +24,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
             <h1 className="text-4xl md:text-6xl mb-6">
               Building Your Dreams with Quality &amp; Precision
             </h1>
-            <p className="text-xl mb-8 text-green-100">
+            <p className="text-xl mb-8 wood-subtitle">
               From residential homes to commercial buildings, we deliver exceptional construction services 
               that stand the test of time. Your vision, our expertise.
             </p>
@@ -38,7 +38,6 @@ export function HomePage({ onNavigate }: HomePageProps) {
             </div>
           </div>
         </div>
-        <div className="absolute inset-0 bg-black opacity-10 pointer-events-none"></div>
       </section>
 
       {/* Stats Section */}
@@ -76,8 +75,8 @@ export function HomePage({ onNavigate }: HomePageProps) {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            <Card className="text-center hover:shadow-lg transition-shadow">
+          <div className="grid md:grid-cols-3 gap-8 items-stretch">
+            <Card className="interactive-card h-full text-center">
               <CardHeader>
                 <div className="bg-primary text-primary-foreground w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Home className="h-6 w-6" />
@@ -89,7 +88,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
               </CardHeader>
             </Card>
 
-            <Card className="text-center hover:shadow-lg transition-shadow">
+            <Card className="interactive-card h-full text-center">
               <CardHeader>
                 <div className="bg-primary text-primary-foreground w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Building className="h-6 w-6" />
@@ -101,7 +100,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
               </CardHeader>
             </Card>
 
-            <Card className="text-center hover:shadow-lg transition-shadow">
+            <Card className="interactive-card h-full text-center">
               <CardHeader>
                 <div className="bg-primary text-primary-foreground w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Hammer className="h-6 w-6" />
@@ -177,10 +176,10 @@ export function HomePage({ onNavigate }: HomePageProps) {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-primary text-primary-foreground">
+      <section className="wood-surface py-16">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl mb-4">Ready to Start Your Project?</h2>
-          <p className="text-xl mb-8 text-green-100 max-w-2xl mx-auto">
+          <p className="text-xl mb-8 wood-subtitle max-w-2xl mx-auto">
             Contact us today for a free consultation and quote. Let's bring your construction vision to life.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

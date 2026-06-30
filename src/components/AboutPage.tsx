@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "./ui/card";
 import { Badge } from "./ui/badge";
+import { Timeline, type TimelineItem } from "./ui/modern-timeline";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import {
   Users,
@@ -21,6 +22,69 @@ import {
 interface AboutPageProps {
   onNavigate: (page: string) => void;
 }
+
+const companyTimeline: TimelineItem[] = [
+  {
+    title: "UA Designs Founded",
+    description:
+      "Engineer King Christian Uy and Architect Mary Claire Anyayahan-Uy establish UA Designs with a shared vision to deliver exceptional architectural and construction solutions.",
+    date: "2021",
+    category: "Foundation",
+    image:
+      "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=150&h=150&fit=crop",
+    status: "completed",
+  },
+  {
+    title: "First Residential Projects",
+    description:
+      "Completed early residential builds across Oriental Mindoro, establishing a reputation for quality craftsmanship and on-time delivery.",
+    date: "2022",
+    category: "Projects",
+    image:
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=150&h=150&fit=crop",
+    status: "completed",
+  },
+  {
+    title: "Commercial & Multi-Unit Expansion",
+    description:
+      "Expanded into commercial construction and multi-unit developments including apartment buildings and office projects.",
+    date: "2023",
+    category: "Growth",
+    image:
+      "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=150&h=150&fit=crop",
+    status: "completed",
+  },
+  {
+    title: "15+ Projects Milestone",
+    description:
+      "Surpassed 15 completed projects with 100% customer satisfaction, serving clients across Luzon and Mindoro.",
+    date: "2024",
+    category: "Milestone",
+    image:
+      "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=150&h=150&fit=crop",
+    status: "completed",
+  },
+  {
+    title: "Design-Build Innovation",
+    description:
+      "Integrating architectural design and engineering under one roof to simplify the building process for clients.",
+    date: "2025",
+    category: "Innovation",
+    image:
+      "https://images.unsplash.com/photo-1572981779307-38b8cabb2407?w=150&h=150&fit=crop",
+    status: "current",
+  },
+  {
+    title: "Sustainable Built Environments",
+    description:
+      "Committed to creating iconic, sustainable spaces that inspire communities and elevate everyday living.",
+    date: "2026",
+    category: "Vision",
+    image:
+      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=150&h=150&fit=crop",
+    status: "upcoming",
+  },
+];
 
 export function AboutPage({ onNavigate }: AboutPageProps) {
   return (
@@ -82,26 +146,28 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
               </Button>
             </div>
 
-            <div className="space-y-4">
+            <div className="overflow-hidden rounded-lg bg-gray-900/60">
               <ImageWithFallback
-                src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&h=400&fit=crop"
-                alt="Construction team at work"
-                className="rounded-lg object-cover w-full h-64"
+                src="/images/about/ua-designs-sign.png"
+                alt="UA Designs wall sign with PLAN | DESIGN | BUILD tagline"
+                className="w-full h-auto object-contain"
               />
-              <div className="grid grid-cols-2 gap-4">
-                <ImageWithFallback
-                  src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=300&h=200&fit=crop"
-                  alt="Modern construction"
-                  className="rounded-lg object-cover w-full h-32"
-                />
-                <ImageWithFallback
-                  src="https://images.unsplash.com/photo-1572981779307-38b8cabb2407?w=300&h=200&fit=crop"
-                  alt="Construction planning"
-                  className="rounded-lg object-cover w-full h-32"
-                />
-              </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Company Timeline */}
+      <section className="py-16 bg-gray-900">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl mb-4 text-white">Our Journey</h2>
+            <p className="text-white max-w-2xl mx-auto">
+              From a shared vision in 2021 to 15+ completed projects — follow the milestones
+              that shaped UA Designs.
+            </p>
+          </div>
+          <Timeline items={companyTimeline} />
         </div>
       </section>
 
@@ -158,8 +224,8 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            <Card className="text-center">
+          <div className="grid md:grid-cols-3 gap-8 items-stretch">
+            <Card className="interactive-card h-full text-center">
               <CardHeader>
                 <div className="bg-primary text-primary-foreground w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Shield className="h-6 w-6" />
@@ -173,7 +239,7 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
               </CardHeader>
             </Card>
 
-            <Card className="text-center">
+            <Card className="interactive-card h-full text-center">
               <CardHeader>
                 <div className="bg-primary text-primary-foreground w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Award className="h-6 w-6" />
@@ -186,7 +252,7 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
               </CardHeader>
             </Card>
 
-            <Card className="text-center">
+            <Card className="interactive-card h-full text-center">
               <CardHeader>
                 <div className="bg-primary text-primary-foreground w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Heart className="h-6 w-6" />
@@ -199,7 +265,7 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
               </CardHeader>
             </Card>
 
-            <Card className="text-center">
+            <Card className="interactive-card h-full text-center">
               <CardHeader>
                 <div className="bg-primary text-primary-foreground w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Zap className="h-6 w-6" />
@@ -212,7 +278,7 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
               </CardHeader>
             </Card>
 
-            <Card className="text-center">
+            <Card className="interactive-card h-full text-center">
               <CardHeader>
                 <div className="bg-primary text-primary-foreground w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Target className="h-6 w-6" />
@@ -225,7 +291,7 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
               </CardHeader>
             </Card>
 
-            <Card className="text-center">
+            <Card className="interactive-card h-full text-center">
               <CardHeader>
                 <div className="bg-primary text-primary-foreground w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Users className="h-6 w-6" />
@@ -255,8 +321,8 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            <Card>
+          <div className="grid md:grid-cols-2 gap-8 items-stretch">
+            <Card className="interactive-card h-full">
               <CardHeader className="text-center">
                 <ImageWithFallback
                   src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face"
@@ -278,7 +344,7 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="interactive-card h-full">
               <CardHeader className="text-center">
                 <ImageWithFallback
                   src="https://images.unsplash.com/photo-1494790108755-2616b612b977?w=200&h=200&fit=crop&crop=face"
@@ -304,13 +370,13 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-primary text-primary-foreground">
+      <section className="wood-surface py-16">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl mb-4">
             Ready to Work with Us?
           </h2>
-          <p className="text-xl mb-8 text-green-100 max-w-2xl mx-auto">
-            Experience the GreenBuilders difference. Contact us
+          <p className="text-xl mb-8 wood-subtitle max-w-2xl mx-auto">
+            Experience the UA Designs difference. Contact us
             today to discuss your construction project.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

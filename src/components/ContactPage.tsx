@@ -73,7 +73,7 @@ export function ContactPage() {
       </section>
 
       <div className="container mx-auto px-4 py-16">
-        <div className="grid lg:grid-cols-2 gap-12">
+        <div className="grid lg:grid-cols-2 gap-12 items-start">
           {/* Contact Form */}
           <div>
             <Card>
@@ -86,7 +86,7 @@ export function ContactPage() {
               <CardContent>
                 {isSubmitted ? (
                   <div className="text-center py-8">
-                    <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
+                    <CheckCircle className="h-16 w-16 text-accent mx-auto mb-4" />
                     <h3 className="text-xl font-semibold mb-2">Thank You!</h3>
                     <p className="text-white">
                       Your message has been sent successfully. We'll get back to you soon.
@@ -182,7 +182,7 @@ export function ContactPage() {
                        />
                     </div>
                     
-                    <Button type="submit" className="w-full" size="lg">
+                    <Button type="submit" className="interactive-btn w-full" size="lg">
                       <Send className="h-4 w-4 mr-2" />
                       Send Message
                     </Button>
@@ -193,7 +193,7 @@ export function ContactPage() {
           </div>
 
           {/* Contact Information */}
-          <div className="space-y-6">
+          <div>
             <Card>
               <CardHeader>
                 <CardTitle className="text-white">Contact Information</CardTitle>
@@ -248,40 +248,36 @@ export function ContactPage() {
                     </p>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-white">Why Choose UA Designs?</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2 text-sm text-white">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-primary" />
-                    Licensed & Insured
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-primary" />
-                    Free Consultations
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-primary" />
-                    Competitive Pricing
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-primary" />
-                    Quality Workmanship
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-primary" />
-                    On-Time Delivery
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-primary" />
-                    24/7 Emergency Service
-                  </li>
-                </ul>
+                <div className="border-t border-gray-700 pt-4">
+                  <p className="font-medium text-white mb-3">Why Choose UA Designs?</p>
+                  <ul className="space-y-2 text-sm text-white">
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-accent shrink-0" />
+                      Licensed & Insured
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-accent shrink-0" />
+                      Free Consultations
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-accent shrink-0" />
+                      Competitive Pricing
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-accent shrink-0" />
+                      Quality Workmanship
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-accent shrink-0" />
+                      On-Time Delivery
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-accent shrink-0" />
+                      24/7 Emergency Service
+                    </li>
+                  </ul>
+                </div>
               </CardContent>
             </Card>
           </div>

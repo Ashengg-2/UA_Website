@@ -1,22 +1,25 @@
-import React, { useState } from 'react';
+import { useState, type ImgHTMLAttributes } from 'react';
 
-interface ImageWithFallbackProps {
+interface ImageWithFallbackProps extends ImgHTMLAttributes<HTMLImageElement> {
   src: string;
   alt: string;
   className?: string;
 }
 
-export function ImageWithFallback({ src, alt, className = '' }: ImageWithFallbackProps) {
+export function ImageWithFallback({
+  src,
+  alt,
+  className = '',
+  loading = 'lazy',
+  decoding = 'async',
+  ...props
+}: ImageWithFallbackProps) {
   const [error, setError] = useState(false);
 
-  const handleError = () => {
-    setError(true);
-  };
-
-  if (error) {
+  if (error || !src) {
     return (
-      <div className={`bg-gray-200 flex items-center justify-center ${className}`}>
-        <span className="text-gray-500 text-sm">{alt}</span>
+      <div className={`flex items-center justify-center bg-gray-800 ${className}`}>
+        <span className="px-2 text-center text-xs text-gray-400">{alt}</span>
       </div>
     );
   }
@@ -26,7 +29,10 @@ export function ImageWithFallback({ src, alt, className = '' }: ImageWithFallbac
       src={src}
       alt={alt}
       className={className}
-      onError={handleError}
+      loading={loading}
+      decoding={decoding}
+      onError={() => setError(true)}
+      {...props}
     />
   );
-} 
+}

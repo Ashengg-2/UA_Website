@@ -1,5 +1,5 @@
-import React from "react";
 import { Button } from "./ui/button";
+import { AnimatedTabs } from "./ui/animated-tabs";
 import { Phone, Mail } from "lucide-react";
 import { Logo } from "./Logo";
 
@@ -20,15 +20,19 @@ export function Header({
     { name: "Contact", id: "contact" },
   ];
 
+  const activeNavPage = navItems.some((item) => item.id === currentPage)
+    ? currentPage
+    : "";
+
   return (
-    <header className="bg-black shadow-sm border-b border-gray-800">
+    <header className="relative z-20 bg-black shadow-sm border-b border-gray-800">
       {/* Top Bar */}
-      <div className="bg-primary text-primary-foreground py-2">
+      <div className="wood-surface py-2">
         <div className="container mx-auto px-4 flex justify-between items-center text-sm">
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2">
               <Phone className="h-4 w-4" />
-                              <span>09985762243</span>
+              <span>09985762243</span>
             </div>
             <div className="flex items-center gap-2">
               <Mail className="h-4 w-4" />
@@ -44,7 +48,7 @@ export function Header({
       {/* Main Navigation */}
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3">
             <div className="flex items-center">
               <Logo size="md" />
             </div>
@@ -53,38 +57,28 @@ export function Header({
                 UA Designs
               </h1>
               <p className="text-sm text-white">
-                Building Tomorrow, Today
+                PLAN | DESIGN | BUILD
               </p>
             </div>
           </div>
 
-          <nav className="hidden md:flex items-center gap-1">
-            {navItems.map((item) => (
-              <Button
-                key={item.id}
-                variant={
-                  currentPage === item.id ? "default" : "ghost"
-                }
-                onClick={() => onNavigate(item.id)}
-                className={`px-4 py-2 ${
-                  currentPage === item.id 
-                    ? "bg-primary text-primary-foreground" 
-                    : "text-white hover:bg-gray-800 hover:text-white"
-                }`}
-              >
-                {item.name}
-              </Button>
-            ))}
-          </nav>
+          <div className="hidden md:block">
+            <AnimatedTabs
+              tabs={navItems.map((item) => ({
+                label: item.name,
+                value: item.id,
+              }))}
+              activeTab={activeNavPage}
+              onTabChange={onNavigate}
+            />
+          </div>
 
           {/* Mobile Menu Button */}
           <Button
             variant="outline"
             className="md:hidden border-white text-white hover:bg-white hover:text-primary bg-transparent"
             onClick={() => {
-              // Simple mobile menu toggle
-              const menu =
-                document.getElementById("mobile-menu");
+              const menu = document.getElementById("mobile-menu");
               if (menu) {
                 menu.classList.toggle("hidden");
               }
@@ -108,8 +102,8 @@ export function Header({
                 }
                 onClick={() => onNavigate(item.id)}
                 className={`justify-start ${
-                  currentPage === item.id 
-                    ? "bg-primary text-primary-foreground" 
+                  currentPage === item.id
+                    ? "bg-primary text-primary-foreground"
                     : "text-white hover:bg-gray-800 hover:text-white"
                 }`}
               >

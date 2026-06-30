@@ -30,8 +30,8 @@ export function ServicesPage({ onNavigate }: ServicesPageProps) {
       {/* Services Grid */}
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card className="hover:shadow-lg transition-shadow">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
+            <Card className="interactive-card h-full">
               <CardHeader>
                 <div className="bg-primary text-primary-foreground w-12 h-12 rounded-full flex items-center justify-center mb-4">
                   <Home className="h-6 w-6" />
@@ -51,7 +51,7 @@ export function ServicesPage({ onNavigate }: ServicesPageProps) {
               </CardContent>
             </Card>
 
-            <Card className="hover:shadow-lg transition-shadow">
+            <Card className="interactive-card h-full">
               <CardHeader>
                 <div className="bg-primary text-primary-foreground w-12 h-12 rounded-full flex items-center justify-center mb-4">
                   <Building className="h-6 w-6" />
@@ -71,7 +71,7 @@ export function ServicesPage({ onNavigate }: ServicesPageProps) {
               </CardContent>
             </Card>
 
-            <Card className="hover:shadow-lg transition-shadow">
+            <Card className="interactive-card h-full">
               <CardHeader>
                 <div className="bg-primary text-primary-foreground w-12 h-12 rounded-full flex items-center justify-center mb-4">
                   <Hammer className="h-6 w-6" />
@@ -91,7 +91,7 @@ export function ServicesPage({ onNavigate }: ServicesPageProps) {
               </CardContent>
             </Card>
 
-            <Card className="hover:shadow-lg transition-shadow">
+            <Card className="interactive-card h-full">
               <CardHeader>
                 <div className="bg-primary text-primary-foreground w-12 h-12 rounded-full flex items-center justify-center mb-4">
                   <Wrench className="h-6 w-6" />
@@ -111,7 +111,7 @@ export function ServicesPage({ onNavigate }: ServicesPageProps) {
               </CardContent>
             </Card>
 
-            <Card className="hover:shadow-lg transition-shadow">
+            <Card className="interactive-card h-full">
               <CardHeader>
                 <div className="bg-primary text-primary-foreground w-12 h-12 rounded-full flex items-center justify-center mb-4">
                   <Paintbrush className="h-6 w-6" />
@@ -131,7 +131,7 @@ export function ServicesPage({ onNavigate }: ServicesPageProps) {
               </CardContent>
             </Card>
 
-            <Card className="hover:shadow-lg transition-shadow">
+            <Card className="interactive-card h-full">
               <CardHeader>
                 <div className="bg-primary text-primary-foreground w-12 h-12 rounded-full flex items-center justify-center mb-4">
                   <Truck className="h-6 w-6" />
@@ -155,10 +155,10 @@ export function ServicesPage({ onNavigate }: ServicesPageProps) {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-primary text-primary-foreground">
+      <section className="wood-surface py-16">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl mb-4">Ready to Start Your Project?</h2>
-          <p className="text-xl mb-8 text-green-100 max-w-2xl mx-auto">
+          <p className="text-xl mb-8 wood-subtitle max-w-2xl mx-auto">
             Contact us today for a free consultation and quote. Let's discuss your construction needs.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

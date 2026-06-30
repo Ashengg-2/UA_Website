@@ -1,3 +1,222 @@
 @tailwind base;
 @tailwind components;
-@tailwind utilities; 
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --wood-base: #1c120f;
+    --wood-dark: #120c09;
+    --wood-mid: #2d1d18;
+    --wood-light: #37231d;
+    --wood-highlight: #4a2f25;
+    --wood-warm: #6a4a38;
+    --wood-cream: #e8ddd4;
+  }
+
+  html {
+    background-color: #000000;
+  }
+}
+
+@layer components {
+  .wood-surface-static {
+    @apply fixed inset-0 -z-10;
+    background-color: var(--wood-dark);
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.04), rgba(0, 0, 0, 0.12)),
+      radial-gradient(ellipse 80% 60% at 14% 10%, rgba(255, 255, 255, 0.08), transparent 52%),
+      radial-gradient(ellipse 125% 95% at 50% 50%, transparent 46%, rgba(0, 0, 0, 0.34) 100%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='640' viewBox='0 0 640 640'%3E%3Cfilter id='w' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.0035 0.16' numOctaves='5' seed='21' stitchTiles='stitch' result='b'/%3E%3CfeColorMatrix in='b' type='saturate' values='0' result='m'/%3E%3CfeComponentTransfer in='m' result='t'%3E%3CfeFuncR type='table' tableValues='0.08 0.18 0.12 0.22 0.10'/%3E%3CfeFuncG type='table' tableValues='0.06 0.13 0.09 0.16 0.08'/%3E%3CfeFuncB type='table' tableValues='0.05 0.11 0.07 0.13 0.07'/%3E%3C/feComponentTransfer%3E%3CfeBlend in='SourceGraphic' in2='t' mode='overlay'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' fill='%231c120f' filter='url(%23w)'/%3E%3C/svg%3E"),
+      linear-gradient(
+        152deg,
+        #120c09 0%,
+        #1c120f 12%,
+        #241814 24%,
+        #2d1d18 38%,
+        #37231d 52%,
+        #4a2f25 66%,
+        #2d1d18 80%,
+        #120c09 100%
+      );
+    background-size: 100% 100%, 100% 100%, 100% 100%, 640px 640px, 100% 100%;
+    background-blend-mode: normal, normal, normal, overlay, normal;
+    background-attachment: fixed;
+  }
+
+  .wood-surface {
+    @apply relative overflow-hidden text-primary-foreground isolate;
+    background: transparent;
+  }
+
+  .wood-surface::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background:
+      linear-gradient(
+        128deg,
+        rgba(255, 255, 255, 0.1) 0%,
+        rgba(255, 255, 255, 0.025) 26%,
+        transparent 54%,
+        rgba(0, 0, 0, 0.08) 100%
+      ),
+      radial-gradient(ellipse 75% 55% at 16% 10%, rgba(255, 255, 255, 0.12), transparent 52%);
+    mix-blend-mode: soft-light;
+    pointer-events: none;
+  }
+
+  .wood-surface::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse 120% 90% at 50% 50%, transparent 48%, rgba(0, 0, 0, 0.28) 100%),
+      linear-gradient(rgba(255, 255, 255, 0.025), rgba(0, 0, 0, 0.08));
+    pointer-events: none;
+  }
+
+  .wood-surface--hero::before {
+    background:
+      linear-gradient(
+        128deg,
+        rgba(255, 255, 255, 0.11) 0%,
+        rgba(255, 255, 255, 0.03) 30%,
+        transparent 56%,
+        rgba(0, 0, 0, 0.1) 100%
+      ),
+      radial-gradient(ellipse 80% 60% at 18% 12%, rgba(255, 255, 255, 0.14), transparent 54%);
+  }
+
+  .wood-surface > * {
+    @apply relative z-[1];
+  }
+
+  .glass-panel {
+    @apply bg-black/40 backdrop-blur-md border border-white/10;
+  }
+
+  .wood-accent-bar {
+    @apply h-1 w-24 mx-auto mb-6 rounded-full;
+    background: linear-gradient(
+      90deg,
+      var(--wood-dark),
+      var(--wood-highlight),
+      var(--wood-light)
+    );
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  }
+
+  .wood-subtitle {
+    color: rgba(232, 221, 212, 0.9);
+  }
+
+  .interactive-card {
+    @apply transition-[transform,box-shadow,background-color] duration-[350ms] ease-out;
+  }
+
+  .interactive-card__image-wrap {
+    @apply shrink-0 overflow-hidden rounded-t-lg;
+  }
+
+  .interactive-card__image {
+    @apply transition-transform duration-[350ms] ease-out;
+  }
+
+  .interactive-card__body {
+    @apply flex flex-1 flex-col p-6 pb-0;
+  }
+
+  .interactive-card__description {
+    @apply flex-grow;
+  }
+
+  .interactive-card__actions {
+    @apply mt-auto p-6 pt-4;
+  }
+
+  .interactive-btn {
+    @apply cursor-pointer transition-[transform,background-color,border-color,color] duration-[350ms] ease-out;
+  }
+
+  .portfolio-featured-card {
+    @apply interactive-card h-full flex flex-col;
+  }
+
+  .portfolio-group-card {
+    @apply bg-gray-700 border-gray-600;
+  }
+
+  .portfolio-nested-card {
+    @apply flex cursor-pointer items-center gap-3 rounded-lg border border-gray-600 bg-gray-800 p-3 transition-[transform,box-shadow,background-color,color] duration-[350ms] ease-out;
+  }
+
+  .portfolio-nested-card__thumb {
+    @apply h-14 w-14 shrink-0 overflow-hidden rounded-md border border-gray-600;
+  }
+
+  .portfolio-nested-card__thumb-image {
+    @apply h-full w-full object-cover transition-transform duration-[350ms] ease-out;
+  }
+
+  .portfolio-nested-card__content {
+    @apply min-w-0 flex-1;
+  }
+
+  .portfolio-nested-card__label {
+    @apply min-w-0 text-sm font-medium text-gray-200 transition-colors duration-[350ms] ease-out;
+  }
+
+  .portfolio-nested-card__action {
+    @apply shrink-0 text-sm text-accent transition-[transform,color] duration-[350ms] ease-out;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .interactive-card:hover {
+      @apply -translate-y-2 scale-[1.02] bg-gray-800 shadow-[0_8px_24px_rgba(0,0,0,0.25)];
+    }
+
+    .interactive-card:hover .interactive-card__image {
+      @apply scale-105;
+    }
+
+    .interactive-card--muted:hover {
+      @apply bg-gray-700;
+    }
+
+    .interactive-btn:hover {
+      @apply -translate-y-0.5 border-accent bg-accent/10 text-white;
+    }
+
+    .portfolio-nested-card:hover {
+      @apply -translate-y-1 scale-[1.01] border-gray-500 bg-gray-600 shadow-md;
+    }
+
+    .portfolio-nested-card:hover .portfolio-nested-card__label {
+      @apply text-white;
+    }
+
+    .portfolio-nested-card:hover .portfolio-nested-card__action {
+      @apply translate-x-1 text-white;
+    }
+
+    .portfolio-nested-card:hover .portfolio-nested-card__thumb-image {
+      @apply scale-105;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .interactive-card,
+  .interactive-card__image,
+  .interactive-btn,
+  .portfolio-nested-card,
+  .portfolio-nested-card__label,
+  .portfolio-nested-card__action,
+  .portfolio-nested-card__thumb-image {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}

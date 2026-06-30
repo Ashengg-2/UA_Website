@@ -1,47 +1,64 @@
-import React from 'react';
 import { Button } from './ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
+import { Card, CardContent, CardDescription, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
 import { ImageWithFallback } from './figma/ImageWithFallback';
-import { Calendar, MapPin, Users } from 'lucide-react';
+import { Calendar, MapPin } from 'lucide-react';
+import {
+  featuredProjects,
+  getAdditionalProjectColumns,
+  getProjectCoverImage,
+  projectsManifest,
+} from '@/data/projects';
 
 interface PortfolioPageProps {
   onNavigate: (page: string) => void;
 }
 
+function PortfolioNestedCard({
+  name,
+  slug,
+  coverImage,
+  onNavigate,
+}: {
+  name: string;
+  slug: string;
+  coverImage: string;
+  onNavigate: (page: string) => void;
+}) {
+  const navigate = () => onNavigate(`project-details-${slug}`);
+
+  return (
+    <div
+      className="portfolio-nested-card"
+      onClick={navigate}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          navigate();
+        }
+      }}
+    >
+      <div className="portfolio-nested-card__thumb">
+        <ImageWithFallback
+          src={coverImage}
+          alt={name}
+          className="portfolio-nested-card__thumb-image"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+      <div className="portfolio-nested-card__content flex items-center justify-between gap-3">
+        <span className="portfolio-nested-card__label">{name}</span>
+        <span className="portfolio-nested-card__action">→ VIEW</span>
+      </div>
+    </div>
+  );
+}
+
 export function PortfolioPage({ onNavigate }: PortfolioPageProps) {
-  const projects = [
-    {
-      id: 1,
-      title: "Project X Residence",
-      category: "Renovation",
-      location: "Las Pinas",
-      duration: "2024",
-      worth: "₱4.2M",
-      image: "/Project X/1.jpg",
-      description: "A luxurious renovation project completed in 2024, featuring modern design and premium finishes."
-    },
-    {
-      id: 2,
-      title: "Project Y Residence",
-      category: "Residential",
-      location: "K.I",
-      duration: "2016",
-      worth: "₱2.1M",
-      image: "/Project Y/image.png",
-      description: "Quality residential project worth ₱2.1M completed in 2016, featuring functional design and durable construction."
-    },
-    {
-      id: 3,
-      title: "Projext Z House Renovations",
-      category: "Renovation",
-      location: "Tandang Sora, QC",
-      duration: "2022",
-      worth: "₱1.5M",
-      image: "/Project Z/image.png",
-      description: "Complete renovation of ancestral house worth ₱1.5M, preserving heritage while adding modern amenities."
-    }
-  ];
+  const additionalProjectColumns = getAdditionalProjectColumns(3);
 
   return (
     <div className="min-h-screen">
@@ -52,7 +69,7 @@ export function PortfolioPage({ onNavigate }: PortfolioPageProps) {
             <h1 className="text-4xl md:text-5xl mb-6 text-white">
               OUR TRACK RECORD
             </h1>
-            <div className="w-24 h-1 bg-primary mx-auto mb-6"></div>
+            <div className="wood-accent-bar"></div>
             <h2 className="text-2xl md:text-3xl mb-6 text-white">
               EXPLORE ARCHITECTURAL INNOVATIONS
             </h2>
@@ -73,39 +90,43 @@ export function PortfolioPage({ onNavigate }: PortfolioPageProps) {
               OUR PROJECTS
             </h2>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map((project) => (
-              <Card key={project.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader className="p-0">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 items-stretch">
+            {featuredProjects.map((project) => (
+              <Card key={project.slug} className="portfolio-featured-card">
+                <div className="interactive-card__image-wrap">
                   <ImageWithFallback
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-48 object-cover rounded-t-lg"
+                    src={getProjectCoverImage(project)}
+                    alt={project.name}
+                    className="interactive-card__image w-full h-48 object-cover"
+                    loading="eager"
+                    decoding="async"
+                    fetchPriority="high"
                   />
-                  <div className="p-6">
-                    <div className="flex items-center justify-between mb-2">
-                      <Badge variant="secondary">{project.category}</Badge>
+                </div>
+                <div className="interactive-card__body">
+                  <div className="flex items-center justify-between mb-2">
+                    <Badge variant="secondary">{project.category}</Badge>
+                    {project.year && (
                       <div className="flex items-center gap-1 text-sm text-white">
                         <Calendar className="h-4 w-4" />
-                        <span>{project.duration}</span>
+                        <span>{project.year}</span>
                       </div>
-                    </div>
-                    <CardTitle className="mb-2 text-white">{project.title}</CardTitle>
-                    <div className="flex items-center gap-1 text-sm text-white mb-2">
-                      <MapPin className="h-4 w-4" />
-                      <span>{project.location}</span>
-                    </div>
-
-                    <CardDescription className="text-white">
-                      {project.description}
-                    </CardDescription>
+                    )}
                   </div>
-                </CardHeader>
-                <CardContent>
-                  <Button 
-                    variant="outline" 
-                    className="w-full"
-                    onClick={() => onNavigate(`project-details-${project.id}`)}
+                  <CardTitle className="mb-2 text-white">{project.name}</CardTitle>
+                  <div className="flex items-center gap-1 text-sm text-white mb-2">
+                    <MapPin className="h-4 w-4" />
+                    <span>{project.location}</span>
+                  </div>
+                  <CardDescription className="interactive-card__description text-white">
+                    {project.description}
+                  </CardDescription>
+                </div>
+                <CardContent className="interactive-card__actions">
+                  <Button
+                    variant="outline"
+                    className="interactive-btn w-full"
+                    onClick={() => onNavigate(`project-details-${project.slug}`)}
                   >
                     → VIEW DETAILS
                   </Button>
@@ -121,121 +142,22 @@ export function PortfolioPage({ onNavigate }: PortfolioPageProps) {
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <h3 className="text-2xl mb-8 text-white text-center">Additional Projects & Renovations</h3>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <Card className="bg-gray-700 border-gray-600 hover:bg-gray-600 transition-colors">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-white text-lg">House Renovations</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-2">
-                  <div className="flex items-center justify-between text-white hover:bg-gray-600 p-2 rounded cursor-pointer" onClick={() => onNavigate('project-details-4')}>
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-primary rounded-full"></div>
-                      <span>SELDA RESIDENCE</span>
-                    </div>
-                    <span className="text-primary text-sm">→ VIEW</span>
-                  </div>
-                  <div className="flex items-center justify-between text-white hover:bg-gray-600 p-2 rounded cursor-pointer" onClick={() => onNavigate('project-details-5')}>
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-primary rounded-full"></div>
-                      <span>CRUZ RESIDENCE</span>
-                    </div>
-                    <span className="text-primary text-sm">→ VIEW</span>
-                  </div>
-                  <div className="flex items-center justify-between text-white hover:bg-gray-600 p-2 rounded cursor-pointer" onClick={() => onNavigate('project-details-6')}>
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-primary rounded-full"></div>
-                      <span>ALEA RESIDENCE</span>
-                    </div>
-                    <span className="text-primary text-sm">→ VIEW</span>
-                  </div>
-                  <div className="flex items-center justify-between text-white hover:bg-gray-600 p-2 rounded cursor-pointer" onClick={() => onNavigate('project-details-7')}>
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-primary rounded-full"></div>
-                      <span>JOSH RESIDENCE</span>
-                    </div>
-                    <span className="text-primary text-sm">→ VIEW</span>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-gray-700 border-gray-600 hover:bg-gray-600 transition-colors">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-white text-lg">Residential Projects</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-2">
-                  <div className="flex items-center justify-between text-white hover:bg-gray-600 p-2 rounded cursor-pointer" onClick={() => onNavigate('project-details-8')}>
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-primary rounded-full"></div>
-                      <span>SOL RESIDENCE</span>
-                    </div>
-                    <span className="text-primary text-sm">→ VIEW</span>
-                  </div>
-                  <div className="flex items-center justify-between text-white hover:bg-gray-600 p-2 rounded cursor-pointer" onClick={() => onNavigate('project-details-9')}>
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-primary rounded-full"></div>
-                      <span>ANYAYAHAN RESIDENCES</span>
-                    </div>
-                    <span className="text-primary text-sm">→ VIEW</span>
-                  </div>
-                  <div className="flex items-center justify-between text-white hover:bg-gray-600 p-2 rounded cursor-pointer" onClick={() => onNavigate('project-details-10')}>
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-primary rounded-full"></div>
-                      <span>ANYAYAHAN RESIDENCES</span>
-                    </div>
-                    <span className="text-primary text-sm">→ VIEW</span>
-                  </div>
-                  <div className="flex items-center justify-between text-white hover:bg-gray-600 p-2 rounded cursor-pointer" onClick={() => onNavigate('project-details-11')}>
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-primary rounded-full"></div>
-                      <span>DELOS REYES RESIDENCE</span>
-                    </div>
-                    <span className="text-primary text-sm">→ VIEW</span>
-                  </div>
-                  <div className="flex items-center justify-between text-white hover:bg-gray-600 p-2 rounded cursor-pointer" onClick={() => onNavigate('project-details-12')}>
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-primary rounded-full"></div>
-                      <span>GUSTO-ALDOVINO RESIDENCE</span>
-                    </div>
-                    <span className="text-primary text-sm">→ VIEW</span>
-                  </div>
-                  <div className="flex items-center justify-between text-white hover:bg-gray-600 p-2 rounded cursor-pointer" onClick={() => onNavigate('project-details-13')}>
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-primary rounded-full"></div>
-                      <span>WATIWAT RESIDENCE</span>
-                    </div>
-                    <span className="text-primary text-sm">→ VIEW</span>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-gray-700 border-gray-600 hover:bg-gray-600 transition-colors">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-white text-lg">Commercial & Multi-Unit</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-2">
-                  <div className="flex items-center justify-between text-white hover:bg-gray-600 p-2 rounded cursor-pointer" onClick={() => onNavigate('project-details-14')}>
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-primary rounded-full"></div>
-                      <span>WATIWAT APARTMENT BUILDING</span>
-                    </div>
-                    <span className="text-primary text-sm">→ VIEW</span>
-                  </div>
-                  <div className="flex items-center justify-between text-white hover:bg-gray-600 p-2 rounded cursor-pointer" onClick={() => onNavigate('project-details-15')}>
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-primary rounded-full"></div>
-                      <span>SY OFFICE BUILDING</span>
-                    </div>
-                    <span className="text-primary text-sm">→ VIEW</span>
-                  </div>
-                  <div className="flex items-center justify-between text-white hover:bg-gray-600 p-2 rounded cursor-pointer" onClick={() => onNavigate('project-details-16')}>
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-primary rounded-full"></div>
-                      <span>DUENAS/FLORINDO COMMERCIAL BUILDING</span>
-                    </div>
-                    <span className="text-primary text-sm">→ VIEW</span>
-                  </div>
-                </CardContent>
-              </Card>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
+              {additionalProjectColumns.map((columnProjects, columnIndex) => (
+                <Card key={columnIndex} className="portfolio-group-card h-full">
+                  <CardContent className="flex flex-col gap-3 p-6">
+                    {columnProjects.map((project) => (
+                      <PortfolioNestedCard
+                        key={project.slug}
+                        name={project.name.toUpperCase()}
+                        slug={project.slug}
+                        coverImage={getProjectCoverImage(project)}
+                        onNavigate={onNavigate}
+                      />
+                    ))}
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </div>
         </div>
@@ -253,7 +175,7 @@ export function PortfolioPage({ onNavigate }: PortfolioPageProps) {
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>
-              <div className="text-3xl text-white mb-2">15</div>
+              <div className="text-3xl text-white mb-2">{projectsManifest.projectCount}</div>
               <div className="text-white">Projects Completed</div>
             </div>
             <div>
@@ -273,10 +195,10 @@ export function PortfolioPage({ onNavigate }: PortfolioPageProps) {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-primary text-primary-foreground">
+      <section className="wood-surface py-16">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl mb-4">Ready to Start Your Project?</h2>
-          <p className="text-xl mb-8 text-green-100 max-w-2xl mx-auto">
+          <p className="text-xl mb-8 wood-subtitle max-w-2xl mx-auto">
             Let's discuss your construction needs and create something amazing together.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
