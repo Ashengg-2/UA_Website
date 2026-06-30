@@ -146,11 +146,11 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
               </Button>
             </div>
 
-            <div className="overflow-hidden rounded-lg bg-gray-900/60">
+            <div className="mx-auto w-full max-w-md overflow-hidden rounded-lg bg-gray-900/60 lg:max-w-[88%]">
               <ImageWithFallback
                 src="/images/about/ua-designs-sign.png"
                 alt="UA Designs wall sign with PLAN | DESIGN | BUILD tagline"
-                className="w-full h-auto object-contain"
+                className="h-auto w-full object-contain"
               />
             </div>
           </div>
