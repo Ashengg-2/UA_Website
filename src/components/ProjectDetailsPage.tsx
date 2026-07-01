@@ -24,7 +24,7 @@ function GalleryMediaItem({
       <div className="overflow-hidden rounded-lg bg-black">
         <video
           controls
-          preload="metadata"
+          preload="none"
           playsInline
           className="h-64 w-full object-cover"
           aria-label={`${projectName} video ${index + 1}`}

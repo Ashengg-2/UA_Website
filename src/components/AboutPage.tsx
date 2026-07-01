@@ -325,9 +325,9 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
             <Card className="interactive-card h-full">
               <CardHeader className="text-center">
                 <ImageWithFallback
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face"
+                  src="/images/about/christian-uy.png"
                   alt="Engineer King Christian Uy"
-                  className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
+                  className="w-24 h-24 rounded-full mx-auto mb-4 object-cover object-[center_28%]"
                 />
                 <CardTitle className="text-white">Engineer King Christian Uy</CardTitle>
                 <CardDescription className="text-white">
@@ -347,7 +347,7 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
             <Card className="interactive-card h-full">
               <CardHeader className="text-center">
                 <ImageWithFallback
-                  src="https://images.unsplash.com/photo-1494790108755-2616b612b977?w=200&h=200&fit=crop&crop=face"
+                  src="/images/about/mary-claire-anyayahan.png"
                   alt="Architect Mary Claire Anyayahan-Uy"
                   className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
                 />

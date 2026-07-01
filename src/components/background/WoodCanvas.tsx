@@ -1,27 +1,25 @@
 import { Canvas } from "@react-three/fiber";
 import { WoodPlane } from "./WoodPlane";
 
-function resolveSegments() {
-  if (typeof window === "undefined") return 160;
+function resolveDprCap() {
+  if (typeof window === "undefined") return 0.55;
   const coarse = window.matchMedia("(max-width: 768px)").matches;
-  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (coarse || reduced) return 112;
-  return 224;
+  return coarse ? 0.45 : 0.6;
 }
 
 export function WoodCanvas() {
-  const segments = resolveSegments();
-  const dpr = typeof window !== "undefined"
-    ? Math.min(window.devicePixelRatio, 1.5)
-    : 1;
+  const dprCap = resolveDprCap();
+  const dpr: [number, number] = [0.4, Math.min(window.devicePixelRatio * 0.75, dprCap)];
 
   return (
     <Canvas
+      data-wood-canvas
+      frameloop="demand"
       dpr={dpr}
       orthographic
       camera={{ position: [0, 0, 1], zoom: 1, near: 0.1, far: 10 }}
       gl={{
-        antialias: true,
+        antialias: false,
         alpha: false,
         powerPreference: "high-performance",
         stencil: false,
@@ -36,7 +34,7 @@ export function WoodCanvas() {
         pointerEvents: "none",
       }}
     >
-      <WoodPlane segments={segments} />
+      <WoodPlane />
     </Canvas>
   );
 }

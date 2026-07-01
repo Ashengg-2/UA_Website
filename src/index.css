@@ -40,7 +40,7 @@
       );
     background-size: 100% 100%, 100% 100%, 100% 100%, 640px 640px, 100% 100%;
     background-blend-mode: normal, normal, normal, overlay, normal;
-    background-attachment: fixed;
+    background-attachment: scroll;
   }
 
   .wood-surface {

@@ -1,52 +1,10 @@
+// Passthrough vertex — grain, gloss, and lighting live entirely in the fragment shader.
 export const woodVertexShader = /* glsl */ `
-  uniform float uTime;
   varying vec2 vUv;
-  varying float vHeight;
-
-  float hash(vec2 p) {
-    return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
-  }
-
-  float noise(vec2 p) {
-    vec2 i = floor(p);
-    vec2 f = fract(p);
-    vec2 u = f * f * (3.0 - 2.0 * f);
-    return mix(
-      mix(hash(i), hash(i + vec2(1.0, 0.0)), u.x),
-      mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), u.x),
-      u.y
-    );
-  }
-
-  float fbm(vec2 p) {
-    float value = 0.0;
-    float amplitude = 0.5;
-    for (int i = 0; i < 5; i++) {
-      value += amplitude * noise(p);
-      p *= 2.04;
-      amplitude *= 0.48;
-    }
-    return value;
-  }
-
-  float woodHeight(vec2 uv) {
-    vec2 warp = vec2(fbm(uv * 1.05 + 1.8), fbm(uv * 1.05 + 5.4)) * 0.11;
-    vec2 grainCoord = vec2(
-      uv.x * 0.35 + warp.x + sin(uv.x * 2.2) * 0.04,
-      uv.y * 14.5 + warp.y * 2.8
-    );
-    float primary = fbm(grainCoord);
-    float fine = fbm(grainCoord * 2.8 + 0.9) * 0.32;
-    float pore = fbm(vec2(grainCoord.x * 5.5, grainCoord.y * 24.0)) * 0.12;
-    return primary * 0.72 + fine + pore;
-  }
 
   void main() {
     vUv = uv;
-    float height = woodHeight(uv * 2.2 + vec2(uTime * 0.004, uTime * 0.003));
-    vHeight = height;
-    vec3 displaced = position + normal * (height - 0.48) * 0.048;
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(displaced, 1.0);
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
   }
 `;
 
@@ -55,7 +13,6 @@ export const woodFragmentShader = /* glsl */ `
   uniform vec2 uMouse;
   uniform vec2 uResolution;
   varying vec2 vUv;
-  varying float vHeight;
 
   float hash(vec2 p) {
     return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
@@ -75,7 +32,7 @@ export const woodFragmentShader = /* glsl */ `
   float fbm(vec2 p) {
     float value = 0.0;
     float amplitude = 0.5;
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 4; i++) {
       value += amplitude * noise(p);
       p *= 2.03;
       amplitude *= 0.5;
@@ -83,15 +40,18 @@ export const woodFragmentShader = /* glsl */ `
     return value;
   }
 
-  float woodPattern(vec2 uv) {
+  vec2 buildGrainCoord(vec2 uv) {
     vec2 drift = vec2(sin(uTime * 0.05), cos(uTime * 0.04)) * 0.003;
     vec2 parallax = uMouse * 0.003;
     vec2 p = uv + drift + parallax;
     vec2 warp = vec2(fbm(p * 0.95 + 1.2), fbm(p * 0.95 + 4.1)) * 0.13;
-    vec2 grainCoord = vec2(
+    return vec2(
       p.x * 0.55 + warp.x + sin(p.x * 2.4) * 0.05,
       p.y * 13.0 + warp.y * 2.6
     );
+  }
+
+  float grainSample(vec2 grainCoord) {
     float primary = fbm(grainCoord);
     float fine = fbm(grainCoord * 2.6 + 0.7) * 0.34;
     float pore = fbm(vec2(grainCoord.x * 5.0, grainCoord.y * 22.0)) * 0.1;
@@ -117,10 +77,12 @@ export const woodFragmentShader = /* glsl */ `
 
   void main() {
     vec2 uv = vUv;
-    float eps = 0.0011;
-    float center = woodPattern(uv);
-    float dx = woodPattern(uv + vec2(eps, 0.0)) - woodPattern(uv - vec2(eps, 0.0));
-    float dy = woodPattern(uv + vec2(0.0, eps)) - woodPattern(uv - vec2(0.0, eps));
+    vec2 grainCoord = buildGrainCoord(uv);
+    float center = grainSample(grainCoord);
+
+    float eps = 0.014;
+    float dx = grainSample(grainCoord + vec2(eps, 0.0)) - grainSample(grainCoord - vec2(eps, 0.0));
+    float dy = grainSample(grainCoord + vec2(0.0, eps)) - grainSample(grainCoord - vec2(0.0, eps));
     vec3 normal = normalize(vec3(-dx * 26.0, -dy * 26.0, 1.0));
 
     vec3 lightDir = normalize(vec3(-0.62 + uMouse.x * 0.1, 0.78 + uMouse.y * 0.06, 0.58));

@@ -1,17 +1,24 @@
 import { useFrame, useThree } from "@react-three/fiber";
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { woodFragmentShader, woodVertexShader } from "./woodShaders";
+import { useWoodBackgroundActive } from "./useWoodBackgroundActive";
 import { useWoodPointer } from "./useWoodPointer";
 
-interface WoodPlaneProps {
-  segments: number;
-}
+const ANIMATION_MS = 90;
 
-export function WoodPlane({ segments }: WoodPlaneProps) {
+export function WoodPlane() {
   const materialRef = useRef<THREE.ShaderMaterial>(null);
-  const { viewport, size } = useThree();
-  const { tick } = useWoodPointer();
+  const { viewport, size, invalidate } = useThree();
+  const woodActive = useWoodBackgroundActive();
+  const woodActiveRef = useRef(woodActive);
+  woodActiveRef.current = woodActive;
+
+  const requestRender = () => {
+    if (woodActiveRef.current && !document.hidden) invalidate();
+  };
+
+  const { tick } = useWoodPointer(requestRender);
 
   const uniforms = useMemo(
     () => ({
@@ -22,8 +29,25 @@ export function WoodPlane({ segments }: WoodPlaneProps) {
     [size.height, size.width],
   );
 
+  useEffect(() => {
+    if (!woodActive || document.hidden) return;
+
+    requestRender();
+    const interval = window.setInterval(requestRender, ANIMATION_MS);
+
+    const onVisibility = () => {
+      if (!document.hidden && woodActiveRef.current) requestRender();
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
+    return () => {
+      window.clearInterval(interval);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, [woodActive, invalidate]);
+
   useFrame((state) => {
-    if (!materialRef.current || document.hidden) return;
+    if (!materialRef.current || document.hidden || !woodActiveRef.current) return;
     materialRef.current.uniforms.uTime.value = state.clock.elapsedTime;
     materialRef.current.uniforms.uMouse.value.copy(tick());
     materialRef.current.uniforms.uResolution.value.set(size.width, size.height);
@@ -31,7 +55,7 @@ export function WoodPlane({ segments }: WoodPlaneProps) {
 
   return (
     <mesh scale={[viewport.width, viewport.height, 1]}>
-      <planeGeometry args={[1, 1, segments, segments]} />
+      <planeGeometry args={[1, 1]} />
       <shaderMaterial
         ref={materialRef}
         uniforms={uniforms}
